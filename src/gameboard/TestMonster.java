@@ -15,14 +15,17 @@ public class TestMonster
 
         Monster.reDrawBoard();
 
+
         for(Monster m : MonstersArray) {
 
             if(m.isAlive()) {
                 int arrayItemIndex = ArrayUtils.indexOf(MonstersArray, m);
                 m.moveMonster(MonstersArray, arrayItemIndex);
+
             }
         }
         Monster.reDrawBoard();
+
     }
 
 }

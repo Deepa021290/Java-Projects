@@ -13,7 +13,7 @@ public class Monster
     public char charName = 'B';
     public int xPosition = 0;
     public int yPosition = 0;
-    public int numOfMonster = 0;
+    public int numOfMonster = 0 ;
 
     public int getHealth()
     {
@@ -87,10 +87,10 @@ public class Monster
 
         this.xPosition = xRandNum;
         this.yPosition = yRandNum;
-        System.out.println(this.xPosition + " " + this.yPosition);
+        System.out.println(this.yPosition + " " + this.xPosition);
 
         this.charName = name.charAt(0);
-        battleBoard[this.xPosition][this.yPosition] = charName;
+        battleBoard[this.yPosition][this.xPosition] = charName;
         numOfMonster++;
     }
 
@@ -135,55 +135,77 @@ public class Monster
 
         boolean isSpaceOpen = true;
 
-        while(isSpaceOpen) {
+        int maxXspace = battleBoard.length - 1;
+        int maxYspace = battleBoard[0].length - 1;
 
-            int maxXspace = battleBoard.length - 1;
-            int maxYspace = battleBoard[0].length - 1;
+        while(isSpaceOpen) {
 
             int randDirection = (int) (Math.random() * 4);
             int randMovement = (int) (Math.random() * (this.getMovement() + 1));
 
+            battleBoard[this.yPosition][this.xPosition] = '*';
+
+            System.out.println(randDirection + " " + randMovement);
             //Moving towards north
             if(randDirection == 0) {
 
                 if((this.yPosition - randMovement) < 0) {
                     this.yPosition = 0;
                 }else {
-                    this.yPosition = this.yPosition - randMovement;
+                    this.yPosition -= randMovement;
                 }
                 //Moving towards east
-            }else if(randDirection == 1) {
+            } else if(randDirection == 1) {
 
                 if((this.xPosition + randMovement) > maxXspace) {
                     this.xPosition = maxXspace;
                 }else {
-                    this.xPosition = this.xPosition + randMovement;
+                    this.xPosition += randMovement;
                 }
                 //Moving towards south
-            }else if(randDirection == 2) {
+            } else if(randDirection == 2) {
 
                 if((this.yPosition + randMovement) > maxYspace) {
                     this.yPosition = maxYspace;
                 }else {
-                    this.yPosition = this.yPosition + randMovement;
+                    this.yPosition += randMovement;
                 }
                 //Moving towards west
-            }else {
+            } else {
                 if((this.xPosition - randMovement) < 0) {
                     this.xPosition = 0;
-                }else {
-                    this.xPosition = this.xPosition - randMovement;
+                } else {
+                    this.xPosition -= randMovement;
                 }
 
             }
 
+            for(int i = 0; i < monster.length; i++){
 
+                if(i == arrayItemIndex){
+                    continue;
+                }
 
-
-
-
+                if(onMySpace(monster, i, arrayItemIndex)){
+                    isSpaceOpen = true;
+                    break;
+                }else{
+                    isSpaceOpen = false;
+                }
+            }
 
         } //End of WHILE loop
+
+        battleBoard[this.yPosition][this.xPosition] = this.charName;
+
     } //End of moveMonster method
+
+    public boolean onMySpace(Monster[] monster, int indexChk1, int indexChk2){
+        if((monster[indexChk1].xPosition == monster[indexChk2].xPosition) && (monster[indexChk1].yPosition == monster[indexChk2].yPosition)){
+            return true;
+        }else {
+            return false;
+        }
+    }
 
 }
